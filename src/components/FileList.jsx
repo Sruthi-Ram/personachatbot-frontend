@@ -55,9 +55,9 @@ const extColorMap = {
 
 export default function FileList() {
   const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.only("sm"));
-  const mdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
+  //const isSm = useMediaQuery(theme.breakpoints.only("sm"));
+  //const mdUp = useMediaQuery(theme.breakpoints.up("md"));
+  //const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
 
   const [selectedRole, setSelectedRole] = useState("HR");
   const [files, setFiles] = useState([]);
