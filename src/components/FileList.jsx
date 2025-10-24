@@ -5,7 +5,6 @@ import {
   Box,
   Typography,
   Paper,
-  Grid,
   Card,
   CardContent,
   Avatar,
@@ -17,8 +16,6 @@ import {
   Divider,
   Chip,
   Stack,
-  useMediaQuery,
-  useTheme,
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
@@ -54,11 +51,6 @@ const extColorMap = {
 };
 
 export default function FileList() {
-  const theme = useTheme();
-  //const isSm = useMediaQuery(theme.breakpoints.only("sm"));
-  //const mdUp = useMediaQuery(theme.breakpoints.up("md"));
-  //const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
-
   const [selectedRole, setSelectedRole] = useState("HR");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -115,8 +107,6 @@ export default function FileList() {
     }
   };
 
-  //const cols = lgUp ? 4 : mdUp ? 3 : isSm ? 2 : 1;
-
   return (
     <Box
       sx={{
@@ -127,10 +117,6 @@ export default function FileList() {
         borderRadius: 2,
       }}
     >
-      {/* Compact header aligned to workspace */}
-     
-
-      {/* Compact filter/search strip that spans full width */}
       <Paper
         elevation={0}
         sx={{
@@ -175,7 +161,7 @@ export default function FileList() {
 
       <Box sx={{ mb: 2 }}>
         <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
-           Choose Role
+          Choose Role
         </Typography>
 
         <ToggleButtonGroup
@@ -250,7 +236,18 @@ export default function FileList() {
           <Typography variant="caption">Try a different search or role.</Typography>
         </Paper>
       ) : (
-        <Grid container spacing={2} alignItems="stretch">
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(3, 1fr)",
+              lg: "repeat(4, 1fr)",
+            },
+            gap: 2,
+          }}
+        >
           {filtered.map((file, idx) => {
             const ext = fileExt(file);
             const colors = extColorMap[ext] || extColorMap.file;
@@ -258,101 +255,100 @@ export default function FileList() {
             const avatarColor = colors[1];
 
             return (
-              <Grid key={idx} item xs={12} sm={6} md={4} lg={3}>
-                <Card
-                  elevation={2}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    height: "100%",
-                    borderRadius: 2,
-                    transition: "transform 0.18s ease, box-shadow 0.18s ease",
-                    "&:hover": { transform: "translateY(-6px)", boxShadow: "0 18px 40px rgba(16,24,40,0.06)" },
-                    px: 0,
-                  }}
-                >
-                  <CardContent sx={{ display: "flex", gap: 1.25, alignItems: "center", p: 1.5 }}>
-                    <Avatar
-                      sx={{
-                        bgcolor: avatarBg,
-                        color: avatarColor,
-                        width: 52,
-                        height: 52,
-                        fontWeight: 800,
-                        fontSize: 13,
-                        textTransform: "uppercase",
-                        border: `1px solid ${avatarBg}`,
-                      }}
-                    >
-                      {ext.slice(0, 3).toUpperCase()}
-                    </Avatar>
-
-                    <Box sx={{ overflow: "hidden", minWidth: 0 }}>
-                      <Typography
-                        sx={{
-                          fontWeight: 800,
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: { xs: 160, sm: 220, md: 280 },
-                        }}
-                        title={file}
-                      >
-                        {file}
-                      </Typography>
-
-                      <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.5 }}>
-                        <Chip
-                          label={`.${ext}`}
-                          size="small"
-                          sx={{
-                            bgcolor: "rgba(0,0,0,0.04)",
-                            borderRadius: 1,
-                            px: 0.6,
-                            fontWeight: 700,
-                            color: "text.secondary",
-                          }}
-                        />
-                      </Stack>
-                    </Box>
-                  </CardContent>
-
-                  <Box
+              <Card
+                key={idx}
+                elevation={2}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "100%",
+                  borderRadius: 2,
+                  transition: "transform 0.18s ease, box-shadow 0.18s ease",
+                  "&:hover": { transform: "translateY(-6px)", boxShadow: "0 18px 40px rgba(16,24,40,0.06)" },
+                  px: 0,
+                }}
+              >
+                <CardContent sx={{ display: "flex", gap: 1.25, alignItems: "center", p: 1.5 }}>
+                  <Avatar
                     sx={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                      p: 1,
-                      pt: 0,
-                      gap: 1,
-                      background: "linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,251,255,0.6))",
-                      borderBottomLeftRadius: 8,
-                      borderBottomRightRadius: 8,
+                      bgcolor: avatarBg,
+                      color: avatarColor,
+                      width: 52,
+                      height: 52,
+                      fontWeight: 800,
+                      fontSize: 13,
+                      textTransform: "uppercase",
+                      border: `1px solid ${avatarBg}`,
                     }}
                   >
-                    <Tooltip title="Download">
-                      <span>
-                        <IconButton
-                          onClick={() => handleDownload(file)}
-                          size="small"
-                          sx={{
-                            bgcolor: "transparent",
-                            color: "text.secondary",
-                            "&:hover": { bgcolor: "rgba(0,170,107,0.06)", color: "#007a4d" },
-                            transition: "all 140ms ease",
-                          }}
-                        >
-                          {downloading[file] ? <CircularProgress size={16} /> : <GetAppIcon fontSize="small" />}
-                        </IconButton>
-                      </span>
-                    </Tooltip>
+                    {ext.slice(0, 3).toUpperCase()}
+                  </Avatar>
+
+                  <Box sx={{ overflow: "hidden", minWidth: 0 }}>
+                    <Typography
+                      sx={{
+                        fontWeight: 800,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: { xs: 160, sm: 220, md: 280 },
+                      }}
+                      title={file}
+                    >
+                      {file}
+                    </Typography>
+
+                    <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.5 }}>
+                      <Chip
+                        label={`.${ext}`}
+                        size="small"
+                        sx={{
+                          bgcolor: "rgba(0,0,0,0.04)",
+                          borderRadius: 1,
+                          px: 0.6,
+                          fontWeight: 700,
+                          color: "text.secondary",
+                        }}
+                      />
+                    </Stack>
                   </Box>
-                </Card>
-              </Grid>
+                </CardContent>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    p: 1,
+                    pt: 0,
+                    gap: 1,
+                    background: "linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,251,255,0.6))",
+                    borderBottomLeftRadius: 8,
+                    borderBottomRightRadius: 8,
+                  }}
+                >
+                  <Tooltip title="Download">
+                    <span>
+                      <IconButton
+                        onClick={() => handleDownload(file)}
+                        size="small"
+                        sx={{
+                          bgcolor: "transparent",
+                          color: "text.secondary",
+                          "&:hover": { bgcolor: "rgba(0,170,107,0.06)", color: "#007a4d" },
+                          transition: "all 140ms ease",
+                        }}
+                      >
+                        {downloading[file] ? <CircularProgress size={16} /> : <GetAppIcon fontSize="small" />}
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                </Box>
+              </Card>
             );
           })}
-        </Grid>
+        </Box>
       )}
     </Box>
   );
