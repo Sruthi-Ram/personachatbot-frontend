@@ -115,7 +115,7 @@ export default function FileList() {
     }
   };
 
-  const cols = lgUp ? 4 : mdUp ? 3 : isSm ? 2 : 1;
+  //const cols = lgUp ? 4 : mdUp ? 3 : isSm ? 2 : 1;
 
   return (
     <Box
